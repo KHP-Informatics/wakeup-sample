@@ -79,36 +79,63 @@ function startApp () {
         //response page to survey completion
         var response_to_form_save = "<h2>Thanks!</h2>"
         $(".container").html(response_to_form_save);
-});
+    });
 
+    var sound_options = {default: "Default"}; //to be loaded from PR?
 
+    $.each(sound_options, function(index, value){
+      $("#alert-sound").append($('<option></option>').attr("value", index).text(value));
+    });
 };
 </script>
 
 </head>
 
 <body>
-<div class="jumbotron"></div>
-
-<div class="container">
-    <div class="" >
-
-    </div>
-
-    <form role="form" id="main-form">
-        <div class="gps-group">
-
-            <div class="form-group">
-                <label>Set Wakup Alarm</label><br/>
-                <input type="time" name="wakeup_time" id="wakeup_time">
+<ul class="nav nav-tabs" role="tablist">
+  <li class="active"><a href="#alarms" role="tab" data-toggle="tab">Alarms</a></li>
+  <li><a href="#options" role="tab" data-toggle="tab">Options</a></li>
+  <li><a href="#instructions" role="tab" data-toggle="tab">Instructions</a></li>
+</ul>
+<div class="container tab-content">
+  <div class="tab-pane active" id="alarms">
+        <form role="form" id="main-form">
+            <div class="gps-group">
+                <div class="form-group">
+                    <label>Set Wakup Alarm</label><br/>
+                    <input type="time" name="wakeup_time" id="wakeup_time">
+                </div>
+                <div class="form-group">
+                    <label>Set Sample Collect Alarm</label><br/>
+                    <input type="time" name="sample_time" id="sample_time">
+                </div>
+                <button type="submit" class="btn btn-primary">Sample Collected!</button>
             </div>
-            <div class="form-group">
-                <label>Set Sample Collect Alarm</label><br/>
-            <input type="time" name="sample_time" id="sample_time">
+        </form>
+      </div>
+      <div class="tab-pane" id="options">
+        <form role="form" id="option-form">
+            <div class="gps-group">
+                <div class="form-group">
+                    <label>Select alarm sound</label>
+                    <select id="alert-sound" name="alert-sound">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Select alarm vibration</label>
+                    <select id="alarm-vibe" name="alarm-vibe">
+                      <option value="buzz">Buzz</option>
+                      <option value="blip">Blip</option>
+                      <option value="sos">S.O.S.</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
             </div>
-
-            <button type="submit" class="btn btn-primary">Sample Collected!</button>
-    </form>
+        </form>
+      </div>
+      <div class="tab-pane" id="instructions">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      </div>
 </div>
 
 </body>
