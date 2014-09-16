@@ -65,7 +65,7 @@
 				var post_data = {};
 				post_data.json = JSON.stringify(json);
 
-				$.ajax("http://172.16.1.142:12345/json/submit", {
+				$.ajax("http://127.0.0.1:12345/json/submit", {
 //				$.ajax("/json/submit", {
 					type: "POST",
 					contentType: "application/x-www-form-urlencoded; charset=UTF-8", 
@@ -84,12 +84,12 @@
 			
 			$(document).ready(function ()
 			{
-				$("form#data_form").submit(function(eventObj)
+				$("form#main-form").submit(function(eventObj)
 				{
 					eventObj.preventDefault();
 					
-					var wake = moment($("input#wake_time").val(), "HH:mm");
-					var remind = moment($("input#remind_time").val(), "HH:mm");
+					var wake = moment($("input#wakeup_time").val(), "HH:mm");
+					var remind = moment($("input#sample_time").val(), "HH:mm");
 					
 					scheduleAlarms(wake.hours(), wake.minutes(), remind.hours(), remind.minutes());
 					
