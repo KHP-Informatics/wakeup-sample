@@ -60,7 +60,7 @@ $( document ).ready(function() {
 
 function startApp () {
 
-    $(".jumbotron").html("<h3>AGM Hack App v0.0.1</h3>");
+    $(".jumbotron").html("<h3>Wakeup Sample v0.0.1</h3>");
 
     $("#main-form").on("submit", function(ev){
 
@@ -99,11 +99,15 @@ function startApp () {
         <div class="gps-group">
 
             <div class="form-group">
-                <label>Who is your daddy and what does he do?</label><br/>
-                <input type="text" name="dad_role" placeholder="He sells insurance.">
+                <label>Set Wakup Alarm</label><br/>
+                <input type="time" name="wakeup_time" id="wakeup_time">
+            </div>
+            <div class="form-group">
+                <label>Set Sample Collect Alarm</label><br/>
+            <input type="time" name="sample_time" id="sample_time">
             </div>
 
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-primary">Sample Collected!</button>
     </form>
 </div>
 
