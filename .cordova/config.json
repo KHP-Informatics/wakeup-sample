@@ -1,0 +1,9 @@
+{
+    "lib": {
+        "www": {
+            "id": "Wake Sample",
+            "version": "0.0.1",
+            "uri": "http://cbits.northwestern.edu"
+        }
+    }
+}
