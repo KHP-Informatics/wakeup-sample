@@ -1,0 +1,115 @@
+<html>
+	<head>
+		<title>Add Alarm Test</title>
+		<script type="text/javascript" src="../js/moment.js"></script>
+		<script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript">
+			function scheduleAlarms(wake_hour, wake_minute, remind_hour, remind_minute)
+			{
+					
+				alert("Schedule " + wake_hour  + " - " +  wake_minute + " -- " + remind_hour + " - " + remind_minute);
+
+				var date_format = "YYYYMMDDTHHmmss"; // See date.js...
+
+				var alarm = moment();
+				alarm.hour(wake_hour);
+				alarm.minute(wake_minute);
+				alarm.seconds(0);
+
+				var end_date = moment();
+				end_date.hour(wake_hour);
+				end_date.minute(wake_minute);
+				end_date.seconds(0);
+				end_date.add('m', 5);
+				
+				var wake_trigger = {};
+
+				wake_trigger.type = "datetime";
+				wake_trigger.name = "Wakeup Alarm";
+				wake_trigger.identifier = "wakeup_alarm";
+				wake_trigger.action = "PurpleRobot.showNativeDialog('HEY!', 'WAKE UP!', 'OK', null, 'PurpleRobot.stopPlayback(); PurpleRobot.stopVibrate();', null); PurpleRobot.vibrate('SOS', true); PurpleRobot.playDefaultTone(true);"; 
+				wake_trigger.datetime_start = alarm.format(date_format);
+				wake_trigger.datetime_end = end_date.format(date_format);
+				wake_trigger.datetime_repeat =  "FREQ=DAILY;INTERVAL=1"
+
+				var script = "PurpleRobot.updateTrigger(\"" + wake_trigger.identifier + "\", " + JSON.stringify(wake_trigger) + ");";
+				
+				alarm = moment();
+				alarm.hour(remind_hour);
+				alarm.minute(remind_minute);
+				alarm.seconds(0);
+
+				var end_date = moment();
+				end_date.hour(remind_hour);
+				end_date.minute(remind_minute);
+				end_date.seconds(0);
+				end_date.add('m', 5);
+
+				var data_trigger = {};
+
+				data_trigger.type = "datetime";
+				data_trigger.name = "Data Collection Reminder";
+				data_trigger.identifier = "date_reminder";
+				data_trigger.action = "PurpleRobot.showNativeDialog('Reminder', 'Did you take a sample?', 'Yes',  'No', 'PurpleRobot.stopPlayback(); PurpleRobot.stopVibrate();', 'PurpleRobot.stopPlayback(); PurpleRobot.stopVibrate();'); PurpleRobot.vibrate('SOS', true); PurpleRobot.playDefaultTone(true);"; 
+				data_trigger.datetime_start = alarm.format(date_format);
+				data_trigger.datetime_end = end_date.format(date_format);
+				
+				script += "PurpleRobot.updateTrigger(\"" + data_trigger.identifier + "\", " + JSON.stringify(data_trigger) + ");";
+
+				var json = {};
+				json.command = "execute_script";
+				json.script = script;
+				
+				console.log('JSON: ' + JSON.stringify(json, 2));
+				
+				var post_data = {};
+				post_data.json = JSON.stringify(json);
+
+				$.ajax("http://172.16.1.142:12345/json/submit", {
+//				$.ajax("/json/submit", {
+					type: "POST",
+					contentType: "application/x-www-form-urlencoded; charset=UTF-8", 
+					data: post_data,
+					success: function(data)
+					{
+						console.log("Response: " + JSON.stringify(data));
+					},
+					error: function(jqXHR, textStatus, errorThrown) 
+					{ 
+						console.log("Error creating trigger: " + errorThrown);
+						console.log("error " + textStatus + " --- " + errorThrown); 
+					}
+				});
+			};
+			
+			$(document).ready(function ()
+			{
+				$("form#data_form").submit(function(eventObj)
+				{
+					eventObj.preventDefault();
+					
+					var wake = moment($("input#wake_time").val(), "HH:mm");
+					var remind = moment($("input#remind_time").val(), "HH:mm");
+					
+					scheduleAlarms(wake.hours(), wake.minutes(), remind.hours(), remind.minutes());
+					
+					return false;
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<h1>Update Trigger Test</h1>
+		
+		<p>Updates the triggers with the specified times to implement alarms and reminders for wake app.</p>
+		
+		<form action="." method="POST" id="data_form">
+			<input type="time" name="wake_time" id="wake_time" placeholder="HH:mm" /><br />
+			<input type="time" name="remind_time" id="remind_time" placeholder="HH:mm" /><br />
+		
+			<input type="submit" value="Update Triggers" />
+		</form>
+	</body>
+</html>
+	
+	
