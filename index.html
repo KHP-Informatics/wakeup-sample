@@ -90,8 +90,8 @@ function startApp () {
 </script>
 
 
-		<script type="text/javascript" src="../js/moment.js"></script>
-		<script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+            <script type="text/javascript" src="bootstrap/js/moment.js"></script>
+            <!-- <script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script> -->
 		<script type="text/javascript">
 			function scheduleAlarms(wake_hour, wake_minute, remind_hour, remind_minute)
 			{
@@ -154,7 +154,7 @@ function startApp () {
 				var post_data = {};
 				post_data.json = JSON.stringify(json);
 
-				$.ajax("http://127.0.0.1:12345/json/submit", {
+/*				$.ajax("http://127.0.0.1:12345/json/submit", {
 //				$.ajax("/json/submit", {
 					type: "POST",
 					contentType: "application/x-www-form-urlencoded; charset=UTF-8", 
@@ -168,7 +168,7 @@ function startApp () {
 						console.log("Error creating trigger: " + errorThrown);
 						console.log("error " + textStatus + " --- " + errorThrown); 
 					}
-				});
+				}); */
 			};
 			
 			$(document).ready(function ()
@@ -177,7 +177,9 @@ function startApp () {
 				{
 					eventObj.preventDefault();
 					
-					var wake = moment($("input#wakeup_time").val(), "HH:mm");
+					alert($("input#wakeup_time").val());
+					//var wake = moment($("input#wakeup_time").val(), "HH:mm");
+					var remind = moment($("input#sample_time").val(), "HH:mm");
 					var remind = moment($("input#sample_time").val(), "HH:mm");
 					
 					scheduleAlarms(wake.hours(), wake.minutes(), remind.hours(), remind.minutes());
@@ -203,11 +205,11 @@ function startApp () {
             <div class="gps-group">
                 <div class="form-group">
                     <label>Set Wakup Alarm</label><br/>
-                    <input type="time" name="wakeup_time" id="wakeup_time">
+                    <input type="text" name="wakeup_time" id="wakeup_time">
                 </div>
                 <div class="form-group">
                     <label>Set Sample Collect Alarm</label><br/>
-                    <input type="time" name="sample_time" id="sample_time">
+                    <input type="text" name="sample_time" id="sample_time">
                 </div>
                 <button type="submit" class="btn btn-primary">Sample Collected!</button>
             </div>
