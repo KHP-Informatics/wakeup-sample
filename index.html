@@ -61,8 +61,24 @@ $( document ).ready(function() {
 function startApp () {
 
     $(".jumbotron").html("<h3>Wakeup Sample v0.0.1</h3>");
+            $("form#main-form").submit(function(eventObj)
+                {
+                eventObj.preventDefault();
 
-    $("#main-form").on("submit", function(ev){
+                //alert($("input#wakeup_time").val());
+                var wake = moment($("input#wakeup_time").val(), "HH:mm");
+                var remind = moment($("input#sample_time").val(), "HH:mm");
+                //var remind = moment($("input#sample_time").val(), "HH:mm");
+
+                scheduleAlarms(wake.hours(), wake.minutes(), remind.hours(), remind.minutes());
+                //response page to survey completion
+                var response_to_form_save = "<h2>Thanks!</h2>"
+                $(".container").html(response_to_form_save);
+
+                return false;
+                });
+
+/*    $("#main-form").on("submit", function(ev){
 
         //stop the automatic browser submit of the form
         ev.preventDefault();
@@ -79,14 +95,14 @@ function startApp () {
         //response page to survey completion
         var response_to_form_save = "<h2>Thanks!</h2>"
         $(".container").html(response_to_form_save);
-    });
+    }); */
 
     var sound_options = {default: "Default"}; //to be loaded from PR?
 
     $.each(sound_options, function(index, value){
       $("#alert-sound").append($('<option></option>').attr("value", index).text(value));
     });
-};
+}; 
 </script>
 
 
@@ -96,7 +112,7 @@ function startApp () {
 			function scheduleAlarms(wake_hour, wake_minute, remind_hour, remind_minute)
 			{
 					
-				alert("Schedule " + wake_hour  + " - " +  wake_minute + " -- " + remind_hour + " - " + remind_minute);
+//				alert("Schedule " + wake_hour  + " - " +  wake_minute + " -- " + remind_hour + " - " + remind_minute);
 
 				var date_format = "YYYYMMDDTHHmmss"; // See date.js...
 
@@ -154,7 +170,7 @@ function startApp () {
 				var post_data = {};
 				post_data.json = JSON.stringify(json);
 
-/*				$.ajax("http://127.0.0.1:12345/json/submit", {
+				$.ajax("http://127.0.0.1:12345/json/submit", {
 //				$.ajax("/json/submit", {
 					type: "POST",
 					contentType: "application/x-www-form-urlencoded; charset=UTF-8", 
@@ -168,26 +184,10 @@ function startApp () {
 						console.log("Error creating trigger: " + errorThrown);
 						console.log("error " + textStatus + " --- " + errorThrown); 
 					}
-				}); */
+				}); 
 			};
-			
-			$(document).ready(function ()
-			{
-				$("form#main-form").submit(function(eventObj)
-				{
-					eventObj.preventDefault();
-					
-					alert($("input#wakeup_time").val());
-					//var wake = moment($("input#wakeup_time").val(), "HH:mm");
-					var remind = moment($("input#sample_time").val(), "HH:mm");
-					var remind = moment($("input#sample_time").val(), "HH:mm");
-					
-					scheduleAlarms(wake.hours(), wake.minutes(), remind.hours(), remind.minutes());
-					
-					return false;
-				});
-			});
-		</script>
+
+                        </script>
 
 
 
@@ -205,11 +205,11 @@ function startApp () {
             <div class="gps-group">
                 <div class="form-group">
                     <label>Set Wakup Alarm</label><br/>
-                    <input type="text" name="wakeup_time" id="wakeup_time">
+                    <input type="time" name="wakeup_time" id="wakeup_time">
                 </div>
                 <div class="form-group">
                     <label>Set Sample Collect Alarm</label><br/>
-                    <input type="text" name="sample_time" id="sample_time">
+                    <input type="time" name="sample_time" id="sample_time">
                 </div>
                 <button type="submit" class="btn btn-primary">Sample Collected!</button>
             </div>
